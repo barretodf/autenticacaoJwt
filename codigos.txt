@@ -1,0 +1,221 @@
+//Cifrando códigos
+
+const mensagemSecreta = 'Edmilson';
+console.log(mensagemSecreta);
+
+function cifraMensagem(mensagem, movimentos){
+    const mensagemCifrada = mensagem.split('').map( caractere => {
+        const codigoCaractere = caractere.charCodeAt(0);
+        return String.fromCharCode( codigoCaractere + movimentos)
+    })
+
+    return mensagemCifrada.join('')
+}
+
+const mensagemCifrada = cifraMensagem(mensagemSecreta, 3)
+
+console.log(mensagemCifrada)
+//--------------------------------------------------------------------------------------
+//essa parte decifra o código
+
+function decifraMensagem(mensagem, movimentos){
+    const mensagemCifrada = mensagem.split('').map( caractere => {
+        const codigoCaractere = caractere.charCodeAt(0);
+        return String.fromCharCode( codigoCaractere - movimentos)
+    })
+
+    return mensagemCifrada.join('')
+}
+
+const mensagemDecifrada = decifraMensagem(mensagemCifrada, 3)
+
+console.log(mensagemDecifrada)
+
+******************************************************************************************
+-----------------------------------------------------------------------------------------
+//Cifra de cezar
+vai de 0 a 25 que são as letras do alfabeto
+
+A B C D E F G H I J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z 
+0 1 2 3 4 5 6 7 8 9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+
+Para saber qual o código é só deslocar a letra a quantidade de casas que foi indicada
+
++3
+ex: eddie
+começa contar do 0 1 2 3 4 - efgh - defg - defg - ijkl - efgh
+
+resultado = hgglh
+-------------------------------------------------------------------------------------------
+
+No código ASC a letra A começa em 65 
+para saber isso temos o código:
+
+"A".charCodeAt(0) //Ele vai retornar 65
+//Se fosse o 'B' o código seria 66
+
+A contagem é de 65 + 25
+A-65 e o Z-90
+
+Para descobrir o código da letra ASC eu uso esse código 
+que é a posição da letra
+
+codigo da letra + deslocamento - digamos que é 7 o deslocamento
+
+na cifra de cezar
+letra A seria 0 e o deslocamento é 7 então seria abcdefgh = H 
+0 + 7 = 7
+
+se fosse a letra F = 5 
+ a b c d e f 
+(0 1 2 3 4 5)
+
+5 + 7 = 12
+a b c d e f g h i j  k  l m  
+0 1 2 3 4 5 6 7 8 9 10 11 12
+
+
+(codigoDaLetra + deslocamento) % tamanhoDoAlfabeto
+//% é o módulo de retorno, se o número passar de 25 a gente volta ao zero
+se for usado 1 % 25 ele retorna 1
+25 % 25 ele retorna 0 
+25 % 26 ele retorna 0 pq o alfabeto está contando com 26 letras
+
+por exemplo se estou no número (24 + 7) % 26  
+24 é o y, vai ser transformado em F
+
+Resumindo:
+
+Eu pego o código original da letra e somo com o deslocamento, 
+uso o % que é o tamanho do alfabeto que é 26 letras
+
+------------------------------------------------------------------------------------
+
+No ASC o meu A = 65 
+
+A B C D E F G H I J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z 
+0 1 2 3 4 5 6 7 8 9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+
+----------------------------------------------------------------------------
+
+A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z 
+65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90
+
+
+Então pra fazer com o ASC a gente muda a fórmula
+
+
+(códigoDaLetraASC menos o codigo da primeira letra)
+
+Se eu quiser transformar o A em zero eu uso
+"A".charCodeAt(0) - 65 = 0
+"B".charCodeAt(0) - 65 = 1
+
+Quando eu pego o codigo da letra e subtraio o valor do código da primeira letra que é o A=65
+
+eu faço um deslocamento de toda a estrutura de 0 a 25
+
+Por ex:
+
+Se eu quero a letra F - o código do F é 70
+"F".charCodeAt(0) - 65 = 5
+
+F-70 menos o código da primeira letra A-65 mais o deslocamento que aqui é 7
+
+(70 - 65 + 7) % 26 =  o F vai parar no M-12
+
+Se fosse o Z-25 viraria G-7 
+Para ser o código ASC eu teria que somar agora com 65
+
+"Z".charCodeAt(0) - 65 % 26 + 65 cairá no 71
+
+***
+A fórmula é:
+
+codigo da letra ASC - código da primeira letra A-65 + deslocamento % tamanhoDoAlfabeto
++ código da primeira letra A-65
+
+Isso é: eu tenho o código ASC, eu mudo ele pra o código de cezar
+de 0 a 25
+depois desloco, faço o giro %
+ai vou ter o código ASC
+
+
+*estrutura
+                -65        +desloc     %tam.   +65 
+codigoASC => codigo0a25 => desloco => giro => codigoASC
+ 
+Com essa fórmula eu tenho os caracteres
+
+
+'ABACATE'
+
+function cifra(String) {
+    return //a string cifrada deslocando 7 no alfabeto de A a Z 
+}
+
+----------------------------------------------------------------------------------------------
+
+Aula 2 
+
+Função de hash
+
+primeiro criar um pakage json para criar um módulo de exportação
+
+npm init -y
+
+----------------------------------
+
+
+***Esse código gera uma hash
+
+//Criando uma hash
+
+import { createHash } from 'crypto'
+
+function criaHash(senha){
+    return createHash('sha256').update(senha).digest('hex')
+}
+
+console.log(criaHash("uma String Qualquer"))
+
+//Usuário gerando nome e senha
+
+class Usuario{
+    constructor(nome, senha){
+        this.nome = nome;
+        this.hash = criaHash(senha);
+    }
+
+//Método de validação do usuário
+
+autentica(nome, senha){
+    if (nome === this.nome && this.hash === criaHash(senha)){
+        console.log("Usuário autenticado com sucesso!");
+        return true;
+    }
+
+            console.log("Usuário ou senha incorretos.");
+    return false;
+}
+}
+
+//Autenticando o usuário
+
+const usuario = new Usuario('eddie', '123')
+
+console.log(usuario)
+
+//Caso de sucesso
+
+usuario.autentica('eddie', '123')
+
+//Casos de fracasso
+usuario.autentica('Eddie', '65312')
+
+-------------------------------------------------------------------
+
+***Hash com sal
+
+
+
