@@ -35,3 +35,8 @@ console.log(jm)
 
 //Teste de sucesso
 jm.autentica('Joao Manoel', 'senhaSecreta')
+
+//Teste de insucesso
+jm.autentica('Joao', 'senhaSecreta')
+jm.autentica('Joao Manoel', 'senha')
+
