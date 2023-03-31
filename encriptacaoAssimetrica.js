@@ -17,3 +17,16 @@ const {privateKey, publicKey } = generateKeyPairSync('rsa',
 
 //console.log (publicKey)
 //console.log (privateKey)
+
+//Informação encriptada usando a chave pública
+
+import { publicEncrypt, privateDecrypt} from 'crypto'
+
+// Encriptação
+
+const dadosCriptografados = publicEncrypt(
+    publicKey,
+    Buffer.from("Mensagem super secreta")
+);
+
+console.log(dadosCriptografados.toString('hex'))
