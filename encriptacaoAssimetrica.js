@@ -18,7 +18,7 @@ const {privateKey, publicKey } = generateKeyPairSync('rsa',
 //console.log (publicKey)
 //console.log (privateKey)
 
-//Informação encriptada usando a chave pública
+
 
 import { publicEncrypt, privateDecrypt} from 'crypto'
 
@@ -30,3 +30,12 @@ const dadosCriptografados = publicEncrypt(
 );
 
 console.log(dadosCriptografados.toString('hex'))
+
+// Transmissão
+
+const dadosDesencriptados = privateDecrypt(
+    privateKey,
+    dadosCriptografados
+)
+
+console.log(`Dados decifrados:${dadosDesencriptados.toString('utf-8')}`)
