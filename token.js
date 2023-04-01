@@ -9,6 +9,9 @@ const token = jwt.sign(
     }, chaveSecreta
 );
 
-console.log(token);
+console.log(token)
 
+//Decodificando o Token JWT
+const tokenDecodificado = jwt.verify(token, chaveSecreta)
 
+console.log(tokenDecodificado)
