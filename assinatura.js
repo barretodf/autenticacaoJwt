@@ -28,6 +28,10 @@ const assinatura = assinador.sign(privateKey, 'hex');
 console.log(`Assinatura:
 ${assinatura}`)
 
+//Intermediário
+
+//dados += 'Arquivo Alterado'
+
 //Envio desse documento
 //O usuário vai receber o documento a assinatura e a chave pública
 

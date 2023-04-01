@@ -213,9 +213,100 @@ usuario.autentica('eddie', '123')
 //Casos de fracasso
 usuario.autentica('Eddie', '65312')
 
--------------------------------------------------------------------
 
-***Hash com sal
+***************************************** JWT ***********************************************
+O JWT (JSON Web Token) é um token que usa a anotação do JSON para armazenar as 
+informações e guarda o dado de forma parecida com os Objetos no JavaScript.
+
+JSON Web Token
+"O JWT é um padrão aberto que define uma forma segura de transmitir informação entre 
+duas partes como um objeto JSON. Essa informação pode ser verificada e confiada, pois foi 
+assinada digitalmente."
+Mas, afinal, como vamos usar esse token? Ele pode estar codificado e decodificado. 
+O corpo desse token decodificado vai ser constituído de três partes: cabeçalho (Header), 
+dados (payload) e assinatura.
+
+Cabeçalho
+(Header)
+
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
 
 
+Dados
+(Payload)
 
+{
+  "sub": "1234567890",
+  "name": "Joseph Climber",
+  "curso": "Node.js",
+  "iat": 1516239022
+}
+
+Assinatura
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  segredo
+)
+
+O cabeçalho ou header vai conter algumas informações sobre o token e qual algoritmo está usando. 
+O dados ou payload que podem ser campos arbitrários, a informação que se pretende transmitir 
+ou armazenar. Por fim, a assinatura, que está relacionada à questão de segurança, a parte 
+que vai guardar o segredo em si, como vai ser decodificado o token.
+
+O token JWT em si:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiY3Vyc28iOiJOb2RlLmpzIiwiaWF0IjoxNTE2MjM5MDIyfQ.9F9wEqdX4E0AdlgcLrBPFG5XEJ_8mcmbKLqswNPPMk8
+
+Sendo:
+
+Cabeçalho (Header): eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+Dados (payload): eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiY3Vyc28iOiJOb2RlLmpzIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+Assinatura: 9F9wEqdX4E0AdlgcLrBPFG5XEJ_8mcmbKLqswNPPMk8
+Após ser codificado, as três partes que compõem o token ficam separadas por um ponto ("."), 
+seguem na mesma ordem de quanto estava decodificado: cabeçalho, dados e assinatura.
+
+Podemos ir no e fazer alguns testes para visualizar como funciona a validação do token e 
+manipular os campos de uma forma mais prática. No site também podemos visualizar mais algumas 
+informações e documentação sobre o padrão que o JWT possui.
+
+Há dois campos "Learn more about JWT", para aprender mais e "See JWT libraries", para ver 
+algumas bibliotecas que implementam o JWT. Descendo um pouco a página temos o "Debugger", 
+o depurador. Este nos permite realizar alterações em um token para visualizar como reflete na 
+codificação final.
+
+É possível escolher o algoritmo, mas vamos deixar em "HS256". Após o título "Decoded" do 
+lado direito, podemos visualizar os campos do cabeçalho: tipo do token e o algoritmo de 
+encriptação. Nos dados, temos alguns campos padrão, como o subject, o name e o iat, 
+sendo uma data de quando foi instanciado.
+
+Em "dados" podemos adicionar os nossos próprios campos. Como, por exemplo, "nome do instrutor".
+
+Dados ou payload
+
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022,
+    "nome do instrutor": "joao manoel"
+}
+
+Note que em "Encoded" do lado esquerdo, reflete diretamente na codificação desse token. Este pode também ser invalidado, visto que no final temos o "Signature Verified", que significa que a assinatura está
+ sendo verificada.
+
+Em "Verify Signature" temos o segredo utilizado, se alterarmos esse segredo é possível 
+mudar o token. Se alterarmos "your-256-bit-secret" para "segredosuperfraco", note que aparece 
+uma mensagem informando que está um segredo considerado fraco.
+
+Ao trocar ou excluir uma parte da página, podemos visualizar que a assinatura foi invalidada 
+e os campos alguns já podem deixar de ser verificados. Por exemplo, se tirarmos uma parte do 
+que consta em "Encoded", também invalidamos a assinatura desse token. Visto que não vai 
+conseguir ler respectivamente quais são as informações.
+
+Subindo a página, podemos selecionar "See JWT libraries" para visualizar algumas ferramentas 
+que já foram feitas para implementar e facilitar para nós. Temos implementações em .NET, 
+em Python, em Node.JS, em Java e outros.
