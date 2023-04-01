@@ -310,3 +310,28 @@ conseguir ler respectivamente quais são as informações.
 Subindo a página, podemos selecionar "See JWT libraries" para visualizar algumas ferramentas 
 que já foram feitas para implementar e facilitar para nós. Temos implementações em .NET, 
 em Python, em Node.JS, em Java e outros.
+
+--------------------------------------------------------------------------------------------
+
+***Fica assim:
+
+import jwt from 'jsonwebtoken';
+
+const chaveSecreta = 'chaveSuperSecreta'
+
+const token = jwt.sign(
+    {
+        apelido: 'Eddie',
+        curso: 'segurança e node.js'
+    }, chaveSecreta
+);
+
+console.log(token)
+
+//Decodificando o Token JWT
+const tokenDecodificado = jwt.verify(token, chaveSecreta)
+
+console.log(tokenDecodificado)
+
+----------------------------------------------------------------------------------------
+
